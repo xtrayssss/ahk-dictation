@@ -1,0 +1,6 @@
+# Groq API key — never commit
+openai_key.txt
+
+# Temporary recordings
+*.wav
+*.raw
