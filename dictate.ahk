@@ -35,3 +35,20 @@ pid := 0
         try FileDelete(WAV)
     }
 }
+
+^!SC021:: {   ; Ctrl+Alt+E — отмена записи
+    global pid
+    if pid {
+        DllCall("AttachConsole", "UInt", pid)
+        DllCall("SetConsoleCtrlHandler", "Ptr", 0, "Int", 1)
+        DllCall("GenerateConsoleCtrlEvent", "UInt", 0, "UInt", 0)
+        ProcessWaitClose(pid, 1)
+        DllCall("FreeConsole")
+        DllCall("SetConsoleCtrlHandler", "Ptr", 0, "Int", 0)
+        pid := 0
+        try FileDelete(WAV)
+        try FileDelete(OUT)
+    }
+    ToolTip("✖ запись отменена")
+    SetTimer () => ToolTip(), -1500
+}

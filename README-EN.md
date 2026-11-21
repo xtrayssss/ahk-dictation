@@ -45,6 +45,7 @@ Ctrl+Alt+D  →  sent to Groq Whisper → the text is typed into the focused win
 | Keys | Action |
 |---|---|
 | `Ctrl+Alt+D` | first press — start recording, second — stop and transcribe |
+| `Ctrl+Alt+E` | **Cancel** the current recording (delete WAV, send nothing) |
 | (recording) | the text is typed into the active window when done |
 
 Recording is stopped with a real console `Ctrl+C` (`GenerateConsoleCtrlEvent`) so ffmpeg flushes the WAV header — the API never gets a broken file.
