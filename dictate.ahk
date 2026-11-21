@@ -34,12 +34,26 @@ savedControl := 0
         try {
             text := Trim(FileRead(OUT, "UTF-8"))
             if text != "" {
-                if savedControl {
-                    ControlSetText(text, "ahk_id " savedControl)
-                } else if savedWin {
-                    ControlSetText(text, "ahk_id " savedWin)
-                } else {
-                    SendText(text " ")
+                inserted := false
+                try {
+                    if savedControl {
+                        ControlSetText(text, "ahk_id " savedControl)
+                        inserted := true
+                    } else if savedWin {
+                        ControlSetText(text, "ahk_id " savedWin)
+                        inserted := true
+                    }
+                } catch {
+                    inserted := false
+                }
+                if !inserted {
+                    ; fallback: clipboard + paste
+                    ClipSave := ClipboardAll()
+                    A_Clipboard := text
+                    ClipWait 2
+                    Send "^v"
+                    Sleep 150
+                    A_Clipboard := ClipSave
                 }
             }
             try FileDelete(WAV)
@@ -49,7 +63,7 @@ savedControl := 0
     }
 }
 
-^!SC021:: {   ; Ctrl+Alt+E — отмена записи
+^!SC012:: {   ; Ctrl+Alt+E — отмена записи (SC012 = E)
     global pid, savedWin, savedControl
     if pid {
         DllCall("AttachConsole", "UInt", pid)
