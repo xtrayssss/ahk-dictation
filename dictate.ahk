@@ -43,8 +43,6 @@ savedControl := 0
                         ControlSetText(text, "ahk_id " savedWin)
                         inserted := true
                     }
-                } catch {
-                    inserted := false
                 }
                 if !inserted {
                     ; fallback: clipboard + paste
